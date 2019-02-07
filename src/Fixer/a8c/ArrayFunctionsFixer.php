@@ -39,7 +39,11 @@ This is just for the sake of consistency. The shorthand is fewer characters to t
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_ARRAY);
+        return $tokens->isTokenKindFound(T_FOREACH);
+    }
+
+    public function fixForEach(Tokens $tokens, $index) {
+
     }
 
     /**
@@ -47,18 +51,17 @@ This is just for the sake of consistency. The shorthand is fewer characters to t
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach ($tokens as $index => $token) {
-//            if (!$token->isGivenKind(T_ARRAY)) {
-//                continue;
-//            }
-
-            continue;
-            $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
-            $prevToken = $tokens[$prevTokenIndex];
-
-            if ($prevToken->equals(';')) {
-                $tokens->clearAt($index);
+        for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
+            if (!$tokens[$index]->isGivenKind(T_FOREACH)) {
+                $this->fixForEach($tokens, $index);
             }
+
+//            $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
+//            $prevToken = $tokens[$prevTokenIndex];
+//
+//            if ($prevToken->equals(';')) {
+//                $tokens->clearAt($index);
+//            }
         }
     }
 }

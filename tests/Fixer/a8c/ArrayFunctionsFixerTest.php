@@ -38,7 +38,14 @@ final class ArrayFunctionsFixerTest extends AbstractFixerTestCase
     {
         return [
             [
-                '<?php $languages=["PHP", "Python", "Swift", "Javascript"];', // This is expected output
+                '<?php 
+                $arr = array(1, 2, 3, 4)
+                function helper1($helper1_value) {
+                    $helper1_value = $helper1_value * 2;
+                    return $helper1_value;
+                }
+                
+                $languages=array_map("helper1", $arr);', // This is expected output
                 '<?php $arr = array(1, 2, 3, 4);
 foreach ($arr as &$value) {
     $value = $value * 2;
